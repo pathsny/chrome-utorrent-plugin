@@ -1,0 +1,16 @@
+1.2
+Add: token authentification support
+Add: auto login
+Add: number of torrents over the icon
+Fix: text transparent according to the theme
+Fix: torrent status change
+Fix: status of the extension
+Fix: screenshot not dispayed in options
+Change: icon
+Change: refresh rate set to 1000ms
+
+1.1
+Add: error message is connection is unsuccessful
+Add: error message if no configuration has been set
+
+1.0

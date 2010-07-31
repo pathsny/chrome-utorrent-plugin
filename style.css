@@ -1,0 +1,153 @@
+html {
+	width:720px;
+	color:black;
+}
+
+div {
+	font:bold 11px "Lucida Grande", Geneva, Arial, Verdana, sans-serif;
+	color:black;
+}
+
+a {
+	cursor:pointer;
+}
+
+img#logo {
+	cursor:pointer;
+}
+
+div#logo {
+	float:left;
+	margin:0;
+	margin-right:15px;
+	padding:0;
+}
+
+div#torrents {
+	margin-top:15px;
+}
+
+div.name {
+	float:left;
+	width:290px;
+	font-size:12px;
+}
+
+div.status {
+	float:left;
+	width:95px;
+	margin-right:20px;
+	text-align:right;
+}
+
+div.status_image {
+	margin:0;
+	margin-right:5px;
+	float:left;
+	height:32px;
+}
+
+div.infos_actions a {
+    display:inline-block;
+    height:22px;
+    width:22px;
+}
+
+a.remove {
+    background-image:url(images/cross_red.png);
+}
+
+a.recheck {
+    background-image:url(images/recheck.png);
+}
+
+a.unpause {
+    background-image:url(images/arrow_green.png);
+}
+
+a.pause {
+    background-image:url(images/pause.png);
+}
+
+a.start {
+    background-image:url(images/arrow_green.png);
+}
+
+a.stop {
+    background-image:url(images/stop.png);
+}
+
+a.forcestart {
+    background-image:url(images/arrow_greenF.png);
+}
+
+a.removedata {
+    background-image:url(images/cross_black.png);
+}
+
+img.bar {
+	float:left;
+	height:5px;
+	margin:0;
+	padding:0;
+}
+
+img.bar2 {
+	height:5px;
+	margin:0;
+	margin-left:5px;
+	padding:0;
+}
+
+div.clean {
+	clear:both;
+}
+
+div.end {
+	margin-bottom:5px;
+}
+
+// DIVs DE LA BARRE DE STATUT
+////////////////////////
+
+div#download_speed {
+	float:left;
+	background:yellow;
+	width:85px;
+}
+
+div.infos_bar_top {
+	float:left;
+	width:60px;
+	color:#888892;
+}
+
+div.infos_bar_bottom {
+	float:left;
+	width:150px;
+	color:#888892;
+}
+
+div.infos_bar_size {
+	float:left;
+	width:100px;
+	color:#888892;
+}
+
+div.infos_bar_eta {
+	float:left;
+	text-align:right;
+	width:60px;
+	color:#888892;
+}
+
+div.infos_bar_stats {
+	float:left;
+	text-align:right;
+	width:50px;
+}
+
+div.infos_actions {
+	margin-top:5px;
+	float:left;
+}

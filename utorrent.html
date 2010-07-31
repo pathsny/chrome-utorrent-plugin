@@ -1,0 +1,39 @@
+<html>
+<!-- 
+µtorrent extension for Google Chrome.
+Contact : utorrentchrome@gmail.com
+-->
+
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="jquery.jqote2.min.js"></script>
+	<script type="text/javascript" src="utorrent.js"></script>
+	<script type="text/javascript" src="torrent_info.js"></script>
+	<script type="text/javascript" src="scripts.js"></script>
+	<script>
+	function options()
+	{
+	
+		chrome.tabs.create({url:'chrome-extension://'+location.hostname+'/options.html'});
+	}
+	</script>
+</head>
+
+<body onload='init()'>
+	<div style='float:left'><img src='images/logo_off.png' /></div>
+	<div style='float:right'>
+	<div style='float:right; background:url(images/options.png) no-repeat left; padding-left:20px; margin-left:10px; margin-right:30px'><a href="javascript:void(0)" onclick="options()" title="Extension options">Options</a></div>
+	<div style='float:right; background:url(images/extensions.png) no-repeat left; padding-left:20px; margin-left:10px'><a href="javascript:void(0)" onclick="chrome.tabs.create({url:'chrome://extensions/'});" title="Extension options">Extensions</a></div>
+	<div style='float:right;'>utorrentchrome@gmail.com</div>
+	<br/><br/>
+	<div id='speed' style='float:right; margin-right:30px'>
+	</div>
+	</div>
+	<div class='clean'></div>
+	
+	<div id="torrents"></div>
+	<div id="error"></div>
+	<div id="debug"></div>
+</body>
+</html>

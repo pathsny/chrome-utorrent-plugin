@@ -1,0 +1,4 @@
+<span>
+	<img src='images/arrow_dl.png' />  <%= this.dl %>
+	<img src='images/arrow_up.png' />  <%= this.ul %>
+</span>	

@@ -1,0 +1,31 @@
+<div id='<%= this.hash %>'>
+	<div class='status_image' style='padding-top:5px;'>
+		<a><img src='images/<%=this.status.status_image%>'/></a>
+	</div>
+	<div style='float:left;'>
+		<div class='name' style='cursor:pointer'><%= this.name %> </div>
+		<div class='infos_bar_top'>s: <%= this.seeds_connected %> (<%= this.seeds_swarm %>)</div>
+		<div class='infos_bar_top'>p: <%= this.peers_connected %> (<%= this.peers_swarm %>)</div>
+		<div class='status'><a><%= this.status.status_text %></a></div>
+		<div class='clean'></div>
+		<img class='bar' src='images/<%= this.status.status_bar %>' style='width: <%= this.percent*5 %> px'/>
+		<img class='bar2' src='images/bar_gray.jpg' style='width: <%= (500 - this.percent*5) %> px'/>
+		<div class='clean'></div>
+		<div class='infos_bar_bottom'>
+			<img src='images/arrow_dl.png'/><%= this.download_speed %> (<%= this.downloaded %>)
+		</div>
+		<div class='infos_bar_bottom'>
+			<img src='images/arrow_up.png'/><%= this.upload_speed %> (<%= this.uploaded %>)
+		</div>
+		<div class='infos_bar_size'><%= this.size %> (<%= this.ratio %>)</div>
+		<div class='infos_bar_eta'><%= this.eta %></div>
+		<div class='infos_bar_stats'><%= this.percent %>%</div>
+	</div>
+	<div class='infos_actions'>
+		<%= this.action_html %>
+		<a class='remove' title='Delete torrent'/>
+		<a class='removedata' title='Delete torrent + data'/>
+	</div>
+	<div class='clean'></div>
+	<div class='end'></div>
+</div>

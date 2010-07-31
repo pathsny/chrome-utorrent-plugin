@@ -1,0 +1,17 @@
+{
+   "browser_action": {
+      "default_icon": "images/icon.png",
+      "popup": "utorrent.html"
+   },
+   "description": "uTorrent for Google Chrome",
+   "icons": {
+      "128": "images/icon.png",
+			"16": "images/icon.png"
+   },
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDdX82CCs/2rhNkBJGM/16BAo6GEnngSJsf7VK0UK/5903gedbg9MtU2PZaAzPruRC/CrCTsb+Gprwt77l3giOaHzlrWAaMX+6cLfkCYK1tcJzf/EHY3xEI+5w5DPoLt5aMHmyz/FG7ZDP9SM4eMA4Z53ZvlvsxcZbMdEiinnI2lwIDAQAB",
+   "name": "uTorrent for Google Chrome",
+   "options_page": "options.html",
+   "permissions": [ "tabs", "http://*/*", "contextMenus"],
+   "update_url": "http://clients2.google.com/service/update2/crx",
+   "version": "1.3"
+}

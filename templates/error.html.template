@@ -1,0 +1,15 @@
+<u>Connection to µtorrent failed.</u>
+<br/>
+<br/>
+Check:
+<ul>
+	<li>your configuration in the options.</li>
+	<li>µtorrent client is started.</li>
+	<li>µtorrent WebUI is activated.</li>
+</ul>
+Increase the refresh interval if:
+<ul>
+	<li>your connection is too slow.</li>
+	<li>your server's bandwith (upload) is saturated.</li>
+	<li>your have a lot of torrents.</li>
+</ul>

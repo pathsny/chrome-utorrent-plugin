@@ -1,0 +1,1 @@
+<a class='<%= this.action %>' title='<%= this.title %>'/>
