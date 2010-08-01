@@ -1,30 +1,14 @@
 var $divs;
 var $templates = {};
+var $utorrent;
 
-function displayError(xhr, error){
-    console.log(error);
-    $("#error").jqotesub($templates.error);
-}
-
-function loadTemplates(fn){
-    ['action', 'error', 'torrents', 'no_torrents', 'speed'].reduce(function(acc_fn, template){
-        return function() {
-            $.get('templates/' + template + '.html.template', function(data){
-                $templates[template] = $.jqotec(data);
-                acc_fn();
-            })
-        }
-    }, fn)();
-}
+$(init);
 
 function init()
 {
     $utorrent = setupUtorrent(displayError);
-    if ($utorrent.not_configured) {
-        chrome.tabs.create({url:'chrome-extension://'+location.hostname+'/options.html'});
-		$("#error").html("The extension is not configured.");
-		return;
-    }
+    if ($utorrent.not_configured) return;
+
     var render = function() {
         $utorrent.getTorrents(displayTorrents)
     } 
@@ -35,6 +19,22 @@ function init()
         setInterval(render, $utorrent.refresh);
 	})
 }
+
+function displayError(xhr, error){
+    $("#error").jqotesub($templates.error);
+}
+
+function loadTemplates(fn){
+    ['action', 'error', 'torrents', 'no_torrents', 'speed'].reduce(function(acc_fn, template){
+        return function() {
+            $.get('templates/' + template + '.html.tmpl', function(data){
+                $templates[template] = $.jqotec(data);
+                acc_fn();
+            })
+        }
+    }, fn)();
+}
+
 
 
 function perform(torrent, action) {
