@@ -19,9 +19,10 @@ var $notify = {
 
 
 chrome.extension.onRequest.addListener(
-  function(request, sender) {
+  function(request, sender, sendResponse) {
       var msg = request.notify;
       if (isset(msg)) $notify.txt(msg[0], msg[1]);
+      sendResponse({});
  });
 
 
