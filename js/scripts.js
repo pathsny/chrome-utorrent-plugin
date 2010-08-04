@@ -18,16 +18,18 @@ function init()
         $utorrent.getTorrents(displayTorrents)
     } 
 
-    $divs = {speed: $("#speed"), torrents: $("#torrents")};
+    $divs = {speed: $("#speed"), torrents: $("#torrents"), error: $("#error")};
     
 	loadTemplates(function(){
 	    render();
-        // setInterval(render, refreshRate());
+        setInterval(render, refreshRate());
 	})
 }
 
 function displayError(xhr, error){
-    $("#error").jqotesub($templates.error);
+    $divs.torrents.empty();
+    $divs.speed.empty();
+    $divs.error.jqotesub($templates.error);
 }
 
 function loadTemplates(fn){
@@ -56,10 +58,8 @@ function perform(torrent, action) {
 }
 
 
-// RECUPERER LES TORRENTS
-////////////////////////
-
 function displayTorrents(result) {
+    $divs.error.empty();
 	var torrents = result.torrents.map(torrentInfo);
 
     torrents = torrents.map(function(torrent){
@@ -93,9 +93,6 @@ function attachClickHandlers(torrent) {
         perform(torrent, $(this).attr("class"))
     })
 }
-
-// CONVERSION DE L'HEURE
-////////////////////////
 
 function getProperties(token, hash)
 {
