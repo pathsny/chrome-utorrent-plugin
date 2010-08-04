@@ -45,86 +45,60 @@
 			text-align:		center;
 		}
 </style>
-</head>
-
+<script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
-	function save_options()
-	{
-		var µtorrent_ip = document.getElementById("utorrent_ip").value;
-		var µtorrent_port = document.getElementById("utorrent_port").value;
-		var µtorrent_login = document.getElementById("utorrent_login").value;
-		var µtorrent_password = document.getElementById("utorrent_password").value;
-		var µtorrent_refresh = document.getElementById("utorrent_refresh").value;
-		localStorage["utorrent_ip"] = µtorrent_ip;
-		localStorage["utorrent_port"] = µtorrent_port;
-		localStorage["utorrent_login"] = µtorrent_login;
-		localStorage["utorrent_password"] = µtorrent_password;
-		if (µtorrent_refresh < 1000)
-		{
-			localStorage["utorrent_refresh"] = 1000;
-		}
-		else
-		{
-			localStorage["utorrent_refresh"] = µtorrent_refresh;
-		}
+	$items = ["utorrent_ip", "utorrent_alt_ip", "utorrent_port", "utorrent_login", "utorrent_password", "utorrent_refresh"];
+	$(init);
+	
+	function init() {
+		$('#language').change(save_lang);
+		$('#save').click(save);	
+		display(localStorage.language || "en");
+		restore();
 	}
-	
-	function restore_options()
-	{
-		var µtorrent_ip = localStorage["utorrent_ip"];
-		if(µtorrent_ip) document.getElementById("utorrent_ip").value = µtorrent_ip;
-	
-		var µtorrent_port = localStorage["utorrent_port"];
-		if(µtorrent_port) document.getElementById("utorrent_port").value = µtorrent_port;
 
-		var µtorrent_login = localStorage["utorrent_login"];
-		if(µtorrent_login) document.getElementById("utorrent_login").value = µtorrent_login;
-		
-		var µtorrent_password = localStorage["utorrent_password"];
-		if(µtorrent_password) document.getElementById("utorrent_password").value = µtorrent_password;
-		
-		var µtorrent_refresh = localStorage["utorrent_refresh"];
-		if(µtorrent_refresh) document.getElementById("utorrent_refresh").value = µtorrent_refresh
-		else document.getElementById("utorrent_refresh").value = 2000;
-		
-		var favoriteLang = localStorage["language"];
-		if (!favoriteLang)
-		{
-			document.getElementById("displayHelp").innerHTML = document.getElementById("en").innerHTML;
-		}
-		else
-		{
-			var select = document.getElementById("language");
-			for (var i = 0; i < select.children.length; i++)
-			{
-				var child = select.children[i];
-				if (child.value == favoriteLang)
-				{
-				  child.selected = "true";
-				  break;
-				}
-			}
-			document.getElementById("displayHelp").innerHTML = document.getElementById(favoriteLang).innerHTML;
-		}
+	function save(e)
+	{
+		e.preventDefault();
+		$.each($items, function(i, item){
+			var refresh = $("#utorrent_refresh").val();
+			if (refresh < 1000) $("#utorrent_refresh").val(1000);
+			localStorage[item] = $("#" + item).val();
+			})
+			$(this).fadeOut("fast").fadeIn("fast")
+	}
+
+	function restore()
+	{
+		$.each($items, function(i, item){
+				var value = localStorage[item] || '';
+				if (item === "utorrent_refresh" && value === '') value = 2000;
+				$("#" + item).val(value);
+		})
 	}
 	
-	// Saves lang to localStorage.
+	function display(lg) {
+		$("div.language").hide();
+		$("#" + lg).show();
+		$("#language option[value='"+lg+"']").attr('selected', 'selected');
+	}
+	
 	function save_lang()
 	{
-	  var select = document.getElementById("language");
-	  var lang = select.children[select.selectedIndex].value;
+	  var lang = $("#language option:selected").text();
 	  localStorage["language"] = lang;
+		display(lang);
 	}
 
 </script>
-
-<body onLoad="restore_options()">
+</head>
+<body>
 
 <div id="main">
 
 	<div id="lang_select">
 		Lang : 
-		<select id="language" onChange="save_lang();location.reload()">
+		<select id="language">
 			<option value="en">en</option>
 			<option value="fr" >fr</option>
 		</select>
@@ -132,9 +106,7 @@
 
 	<div id="logo"><img src="images/logo.png" alt="µtorrent Extension" /></div>
 
-	<div id="displayHelp"></div>
-
-	<div id="en" style="display:none">
+	<div id="en" class="language">
 		<div id="help">
 			<h1>How do I get this to work ?</h1>
 			<p>First, you need to activate the WebUI function of µtorrent. In order to do that, run µtorrent, and select Options in the menu bar, then Preferences, and Web UI. Check the "Enable Web UI" box, and choose an Username and a Password for you to log in.</p>
@@ -143,7 +115,7 @@
 		</div>
 	</div>
 
-	<div id="fr" style="display:none">
+	<div id="fr" class="language">
 		<div id="help">
 			<h1>Comment configurer l'extension ?</h1>
 			<p>Premièrement, il est nécessaire d'activer la fonction WebUI d'µtorrent. Pour cela, lancez µtorrent, sélectionnez Options dans la barre de menu, puis Préférences, et enfin Web UI. Cochez la case "Autoriser Web UI", et définissez un nom d'utilisateur et un mot de passe qui vous serviront pour vous identifier.</p>
@@ -157,6 +129,8 @@
 		<form>
 			<label id="server">Server :</label><br />
 			<input type="text" id="utorrent_ip" /><br />
+			<label id="server">Alternate Server :</label><br />
+			<input type="text" id="utorrent_alt_ip" /><br />
 			<label id="port">Port :</label><br />
 			<input type='text' id='utorrent_port' /><br />
 			<label id="login">Login :</label><br />
@@ -165,12 +139,9 @@
 			<input type='password' id='utorrent_password' /><br />
 			<label id="refresh">Refresh Interval :</label><br />
 			<input type='text' id='utorrent_refresh' /><br />
-			<button onClick="save_options()">Save</button>
+			<button id='save'>Save</button>
 		</form>
     </div>
-    
 </div>
-
-
 </body>
 </html>

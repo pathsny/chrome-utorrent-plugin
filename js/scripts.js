@@ -4,6 +4,11 @@ var $utorrent;
 
 $(init);
 
+function refreshRate() {
+    if (!isset(localStorage.utorrent_refresh)) localStorage.utorrent_refresh = 2000;
+    return localStorage.utorrent_refresh;
+}
+
 function init()
 {
     $utorrent = setupUtorrent(displayError);
@@ -14,9 +19,10 @@ function init()
     } 
 
     $divs = {speed: $("#speed"), torrents: $("#torrents")};
+    
 	loadTemplates(function(){
 	    render();
-        setInterval(render, $utorrent.refresh);
+        // setInterval(render, refreshRate());
 	})
 }
 
