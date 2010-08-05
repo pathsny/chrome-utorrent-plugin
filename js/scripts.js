@@ -14,16 +14,93 @@ function init()
     $utorrent = setupUtorrent(displayError);
     if ($utorrent.not_configured) return;
 
-    var render = function() {
-        $utorrent.getTorrents(displayTorrents)
-    } 
+    var renderer = create_renderer();
 
     $divs = {speed: $("#speed"), torrents: $("#torrents"), error: $("#error")};
     
 	loadTemplates(function(){
-	    render();
-        setInterval(render, refreshRate());
+	    renderer.first();
+        setInterval(renderer.refresh, refreshRate());
 	})
+}
+
+function create_renderer() {
+    var displayTorrents = function(ts) {
+        $divs.error.empty();
+        var torrents = [];
+        for (key in ts) {
+            torrents.push($.extend(ts[key], {action_html: $.jqote($templates.action, ts[key].actions)}))
+        }
+        
+    	if (torrents.length > 0) {
+    	    $divs.torrents.jqotesub($templates.torrents, torrents);
+            $divs.speed.jqotesub($templates.speed, getGlobalSpeeds(torrents));
+        }		
+    	else {
+    	    $divs.torrents.jqotesub($templates.no_torrents, torrents);
+    	}
+
+    	torrents.forEach(attachClickHandlers)
+    }
+    
+    var attachClickHandlers = function(torrent) {
+        var torrent_div = $("#"+torrent.hash);
+    	var actions = ['start', 'stop'].filter(function(action){
+    	    return torrent.status.actions.indexOf(action) !== -1;
+    	})
+
+    	actions.forEach(function(action){
+    	    torrent_div.find("div.status_image > a, div.status > a").click(function(){
+                    perform(torrent, action)
+            })
+        }) 
+
+        torrent_div.find("div.infos_actions").delegate('a', 'click', function(){
+            perform(torrent, $(this).attr("class"))
+        })
+    };
+    
+    var perform = function(torrent, action) {
+        var prfrm = function(a, fn) {
+            $utorrent.perform(a, torrent.hash, fn);
+        }
+        if (action == 'recheck'){
+            prfrm("stop", function(){
+                prfrm("recheck");
+            });
+        } 
+        prfrm(action);
+    };
+    
+    var cache_id;
+    var torrents;
+    
+    return {
+        first: function() {
+            $utorrent.getTorrents(function(result) {
+                torrents = result.torrents.reduce(function(ts, data){
+                    var t = torrentInfo(data);
+                    ts[t.hash] = t;
+                    return ts;
+                }, {});
+                cache_id = result.torrentc;
+                displayTorrents(torrents);
+            });
+        },
+        refresh: function(){
+           $utorrent.updateTorrents(cache_id, function(result) {
+               cache_id = result.torrentc;
+               $.each(result.torrentp, function(i, data) {
+                   var t = torrentInfo(data);
+                   torrents[t.hash] = t;
+               })
+               $.each(result.torrentm, function(i, data) {
+                   delete torrents[data];
+               })
+               displayTorrents(torrents);
+           }) 
+        } 
+    }
 }
 
 function displayError(xhr, error){
@@ -45,54 +122,9 @@ function loadTemplates(fn){
 
 
 
-function perform(torrent, action) {
-    var prfrm = function(a, fn) {
-        $utorrent.perform(a, torrent.hash, fn);
-    }
-    if (action == 'recheck'){
-        prfrm("stop", function(){
-            prfrm("recheck");
-        });
-    } 
-    prfrm(action);
-}
 
 
-function displayTorrents(result) {
-    $divs.error.empty();
-	var torrents = result.torrents.map(torrentInfo);
 
-    torrents = torrents.map(function(torrent){
-        return $.extend(torrent, {action_html: $.jqote($templates.action, torrent.actions)})
-    })
-
-	if (torrents.length > 0) {
-	    $divs.torrents.jqotesub($templates.torrents, torrents);
-        $divs.speed.jqotesub($templates.speed, getGlobalSpeeds(torrents));
-    }		
-	else {
-	    $divs.torrents.jqotesub($templates.no_torrents, torrents);
-	}
-
-	torrents.forEach(attachClickHandlers)
-}
-
-function attachClickHandlers(torrent) {
-    var torrent_div = $("#"+torrent.hash);
-	var actions = ['start', 'stop'].filter(function(action){
-	    return torrent.status.actions.indexOf(action) !== -1;
-	})
-	
-	actions.forEach(function(action){
-	    torrent_div.find("div.status_image > a, div.status > a").click(function(){
-                perform(torrent, action)
-        })
-    }) 
-    
-    torrent_div.find("div.infos_actions").delegate('a', 'click', function(){
-        perform(torrent, $(this).attr("class"))
-    })
-}
 
 function getProperties(token, hash)
 {

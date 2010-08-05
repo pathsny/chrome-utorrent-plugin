@@ -1,0 +1,11 @@
+0.6.2
+ * changed get torrents to download data incrementally
+
+0.6.1
+* Secondary server added for dyndns
+
+0.6
+* Ability to add torrents from any pane
+
+0.5
+* Basic display of torrents and manipulation

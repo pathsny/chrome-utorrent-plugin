@@ -17,7 +17,7 @@ function setupUtorrent(errorFn) {
         chrome.tabs.create({url:'chrome-extension://'+location.hostname+'/options.html'});        
         return {not_configured: true}
     }
-    $.ajaxSetup({timeout: 500,username: server.login, password: server.password});
+    $.ajaxSetup({timeout: 5000,username: server.login, password: server.password});
     var baseUrl = function(ip){return "http://" + server[ip]+":"+server.port+"/gui/";};
     var cur_data;
 
@@ -51,16 +51,15 @@ function setupUtorrent(errorFn) {
     
     var get = function(data, fn) {
         withToken(function(token, url) {
-            $.ajax({url: url, data: $.extend({token: token}, data), dataType: "json", success: fn, error: function() {
-                cur_data = undefined;
-                errorFn.apply(this, arguments);
-            }});
+            $.ajax({url: url, data: $.extend({token: token}, data), dataType: "json", success: fn});
         })
     }
 
     return {
-        getTorrents: function(fn) { get({list: 1}, fn) },
         perform: function(action, hash, fn) { get({action: action, hash: hash}, fn) },
-        upload: function(url, fn) {get({action: "add-url", s: url}, fn)}
+        upload: function(url, fn) {get({action: "add-url", s: url}, fn)},
+        getTorrents: function(fn) { get({list: 1}, fn) },
+        updateTorrents: function(c, fn) { get({list: 1, cid: c}, fn) },
+        
     }
 }
